@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from enum import Enum
+from typing import Optional
 
 class Role(str, Enum):
     candidate = "candidate"
@@ -7,10 +8,10 @@ class Role(str, Enum):
     admin = "admin"
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    email: str
     password: str
-    full_name: str
-    role: Role = Role.candidate
+    role: str
+    full_name: str | None = None  # or name: str | None = None
 
 class UserOut(BaseModel):
     id: int
@@ -18,5 +19,13 @@ class UserOut(BaseModel):
     full_name: str
     role: Role
 
-    class Config:
-        orm_mode = True
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    bio: Optional[str] = None
+    role: Optional[Role] = None
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

@@ -10,4 +10,4 @@ class BookingCreate(BaseModel):
 class BookingOut(BookingCreate):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
