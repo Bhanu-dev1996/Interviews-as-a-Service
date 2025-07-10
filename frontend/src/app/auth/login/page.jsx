@@ -1,48 +1,36 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useAuth } from "@/components/auth/auth-provider";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import Link from "next/link";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useState } from "react"
+import { useAuth } from "@/components/auth/auth-provider"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import Link from "next/link"
+import { Loader2 } from "lucide-react"
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const router = useRouter();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    e.preventDefault()
+    setError("")
+    setLoading(true)
 
     try {
-      const user = await login(email, password);
-      console.log("Login user:", user); // <-- Add this line
-      if (user?.role === "candidate") {
-        router.push("/candidate");
-      } else if (user?.role === "interviewer") {
-        router.push("/interviewer");
-      } else if (user?.role === "admin") {
-        router.push("/admin");
-      } else {
-        router.push("/");
-      }
+      await login(email, password)
+      // Login success is handled in the auth provider with redirect
     } catch (err) {
-      setError("Invalid email or password");
-      console.log("Login error:", err); // <-- Add this line
+      setError("Invalid email or password")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -114,5 +102,5 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
